@@ -14,23 +14,28 @@ import {
 } from "react-native";
 
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "../config/firebase";
 
 const bgImage = require("../assets/background.png");
 
-const Login = ({ navigation }) => {
+const SignUp = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rePass, setRePass] = useState("");
 
-  const handleLogin = async () => {
-    if (email !== "" && password !== "") {
+  const handleSignUp = async () => {
+    if (email !== "" && password !== "" && rePass !== "") {
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        console.log("Login Success");
+        if (password !== rePass) {
+          throw new Error("Passwords don't match!");
+        }
+
+        await createUserWithEmailAndPassword(auth, email, password);
+        console.log("SignUp Success");
       } catch (err) {
-        Alert.alert("Login failed", err.message);
+        Alert.alert("SignUp failed", err.message);
       }
     }
   };
@@ -43,7 +48,7 @@ const Login = ({ navigation }) => {
       />
       <View style={styles.whiteSheet} />
       <SafeAreaView style={styles.form}>
-        <Text style={styles.title}>Login</Text>
+        <Text style={styles.title}>SignUp</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter email"
@@ -64,18 +69,28 @@ const Login = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setPassword(text)}
         />
+        <TextInput
+          style={styles.input}
+          placeholder="Repeat password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry={true}
+          textContentType="password"
+          value={email}
+          onChangeText={(text) => setRePass(text)}
+        />
 
         <TouchableOpacity
           style={styles.button}
-          onPress={handleLogin}
+          onPress={handleSignUp}
         >
-          <Text style={styles.btnText}>Log In</Text>
+          <Text style={styles.btnText}>Sign Up</Text>
         </TouchableOpacity>
 
         <View style={styles.linkContainer}>
-          <Text style={styles.linkText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-            <Text style={styles.link}>Sign Up</Text>
+          <Text style={styles.linkText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.link}>Log In</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -83,7 +98,7 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
@@ -114,7 +129,7 @@ const styles = StyleSheet.create({
   },
   whiteSheet: {
     width: "100%",
-    height: "75%",
+    height: "80%",
     position: "absolute",
     bottom: 0,
     backgroundColor: "#FFF",
