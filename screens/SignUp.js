@@ -66,7 +66,7 @@ const SignUp = ({ navigation }) => {
           autoCorrect={false}
           secureTextEntry={true}
           textContentType="password"
-          value={email}
+          value={password}
           onChangeText={(text) => setPassword(text)}
         />
         <TextInput
@@ -76,7 +76,7 @@ const SignUp = ({ navigation }) => {
           autoCorrect={false}
           secureTextEntry={true}
           textContentType="password"
-          value={email}
+          value={rePass}
           onChangeText={(text) => setRePass(text)}
         />
 

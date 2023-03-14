@@ -61,7 +61,7 @@ const Login = ({ navigation }) => {
           autoCorrect={false}
           secureTextEntry={true}
           textContentType="password"
-          value={email}
+          value={password}
           onChangeText={(text) => setPassword(text)}
         />
 
